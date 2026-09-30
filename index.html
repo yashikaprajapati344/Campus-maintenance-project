@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusFix - Maintenance Control System</title>
+    <!-- Chart.js for Live Data Analytics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="logo">
+            <span class="logo-badge">CF</span>
+            <span>CampusFix</span>
+        </div>
+        <nav>
+            <button id="nav-dashboard" class="active" onclick="switchView('dashboard')">Dashboard</button>
+            <button id="nav-register" onclick="switchView('register')">Register</button>
+            <button id="nav-tickets" onclick="switchView('tickets')">All Tickets</button>
+            <button id="nav-reports" onclick="switchView('reports')">Reports</button>
+        </nav>
+        <button class="btn-report" onclick="switchView('register')">+ Report an Issue</button>
+    </header>
+
+    <!-- DASHBOARD VIEW -->
+    <div id="view-dashboard" class="view active">
+        <div class="stats-grid">
+            <div class="stat-card"><div class="val" id="dash-total">0</div><div class="lbl">Total Tickets</div></div>
+            <div class="stat-card"><div class="val" id="dash-resolved">0</div><div class="lbl">Resolved</div></div>
+            <div class="stat-card"><div class="val" id="dash-cost">₹0</div><div class="lbl">Avg Repair Cost</div></div>
+            <div class="stat-card"><div class="val" id="dash-buildings">6</div><div class="lbl">Buildings Covered</div></div>
+        </div>
+
+        <h3>RECENTLY REPORTED</h3>
+        <div class="ticket-list" id="recent-tickets-list"></div>
+    </div>
+
+    <!-- REGISTER FORM VIEW -->
+    <div id="view-register" class="view">
+        <div class="form-container">
+            <h2>REGISTER A COMPLAINT</h2>
+            <p class="form-subtitle">Fill in the details below — a ticket ID is generated automatically.</p>
+            
+            <form id="complaintForm" onsubmit="handleFormSubmit(event)">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Student Name</label>
+                        <input type="text" id="studentName" placeholder="e.g. Rahul Sharma" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Department</label>
+                        <select id="department" required>
+                            <option value="">Select department</option>
+                            <option value="BCA">BCA</option>
+                            <option value="B.Tech IT">B.Tech IT</option>
+                            <option value="MCA">MCA</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Building</label>
+                        <select id="building" required>
+                            <option value="">Select building</option>
+                            <option value="Block A">Block A</option>
+                            <option value="Block B">Block B</option>
+                            <option value="Computer Lab">Computer Lab</option>
+                            <option value="Library">Library</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Room No.</label>
+                        <input type="text" id="roomNo" placeholder="e.g. 204" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select id="category" required>
+                            <option value="">Select category</option>
+                            <option value="Electrical">Electrical</option>
+                            <option value="Furniture">Furniture</option>
+                            <option value="Plumbing">Plumbing</option>
+                            <option value="IT">IT</option>
+                            <option value="Internet">Internet</option>
+                            <option value="Cleaning">Cleaning</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Priority</label>
+                        <select id="priority" required>
+                            <option value="">Select priority</option>
+                            <option value="Low">Low</option>
+                            <option value="Medium">Medium</option>
+                            <option value="High">High</option>
+                        </select>
+                    </div>
+                    <div class="form-group full">
+                        <label>Problem Description</label>
+                        <textarea id="problem" rows="3" placeholder="Describe what's wrong..." required></textarea>
+                    </div>
+                </div>
+                <button type="submit" class="btn-submit full-width">Register Complaint</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ALL TICKETS VIEW -->
+    <div id="view-tickets" class="view">
+        <h3>ALL TICKETS</h3>
+        <p class="section-subtitle">Search, filter, and view registered complaints.</p>
+        <div class="ticket-list" id="all-tickets-list"></div>
+    </div>
+
+    <!-- REPORTS & ANALYTICS VIEW -->
+    <div id="view-reports" class="view">
+        <div class="reports-header">
+            <div>
+                <h3>REPORTS & ANALYSIS</h3>
+                <p class="section-subtitle">Real-time tracking metrics and status visuals.</p>
+            </div>
+            <button class="btn-submit" onclick="exportCSV()">Export tickets to CSV</button>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card"><div class="val" id="rep-total">0</div><div class="lbl">Total Complaints</div></div>
+            <div class="stat-card"><div class="val" id="rep-pending">0</div><div class="lbl">Pending</div></div>
+            <div class="stat-card"><div class="val" id="rep-progress">0</div><div class="lbl">In Progress</div></div>
+            <div class="stat-card"><div class="val" id="rep-resolved">0</div><div class="lbl">Resolved</div></div>
+        </div>
+
+        <div class="charts-grid">
+            <div class="chart-box">
+                <h4>Complaints by Category</h4>
+                <canvas id="categoryChart"></canvas>
+            </div>
+            <div class="chart-box">
+                <h4>Status Distribution</h4>
+                <canvas id="statusChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
